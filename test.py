@@ -1,18 +1,17 @@
 #1
 class ConsoGES:
-  def __init__(self, coutGES, utilite,description):
+    def __init__(self, coutGES, utilite,description):
         self.coutGES = coutGES
         self.utilite = utilite
         self.description = description
-        
-#2       
+
+#2
 alimentation = [
     ConsoGES(2.2, 5, "Alimentation très carnée"),
     ConsoGES(1.2, 7, "Alimentation modérément carnée"),
     ConsoGES(0.9, 6, "Alimentation végétarienne"),
     ConsoGES(0.4, 4, "Alimentation végétalienne")
 ]
-
 transport = [
     ConsoGES(3, 4, "Utilisation d'une grosse voiture thermique pour 5000km à l'année par personne"),
     ConsoGES(2.1, 6, "Utilisation d'une petite voiture thermique pour 10000km àl'année par personne"),
@@ -30,53 +29,54 @@ consommation = [
 ]
 #3
 class SacADosGES:
-      def __init__(self, alimentation, transport, logement, consommation):
+    def __init__(self, alimentation, transport, logement, consommation):
         self.alimentation = alimentation
         self.transport = transport
         self.logement = logement
         self.consommation = consommation
-        
-        #4
-        def getCoutGES(self):
-          total_cout = 0
-          for objet_sac in self.alimentation + self.transport + self.logement + self.consommation:
+
+    #4
+    def getCoutGES(self):
+        total_cout = 0
+        for objet_sac in self.alimentation + self.transport + self.logement + self.consommation:
             total_cout += objet_sac.coutGES
-          return total_cout
-        
-        def getUtilite(self):
-          total_utilite = 0
-          for objet_sac in self.alimentation + self.transport + self.logement + self.consommation:
+        return total_cout
+
+    def getUtilite(self):
+        total_utilite = 0
+        for objet_sac in self.alimentation + self.transport + self.logement + self.consommation:
             total_utilite += objet_sac.utilite
-          return total_utilite
-        
-        def est_valide(self,B):
-          return self.getCoutGES() <= B
-        
-        
-       #5  
-        def getSacsADos(alimentation, transport, logement, consommation):
-          sacs_a_dos = []
-          for a in alimentation:
+        return total_utilite
+
+    def est_valide(self,B):
+        return self.getCoutGES() <= B
+
+
+    #5
+
+    def getSacsADos():
+        sacs_a_dos = []
+        for a in alimentation:
             for t in transport:
                 for l in logement:
                     for c in consommation:
                         sac = SacADosGES([a], [t], [l], [c])
                         sacs_a_dos.append(sac)
-          return sacs_a_dos
-        
-        def filtre(self,sac_a_dos,B):
-          sac_a_dos_filtre=[]
-          for sac in sac_a_dos:
-            if est_valide(sac,B)== True:
-              sac_a_dos_filtre.append(sac)
-          return sac_a_dos_filtre
- #6  
+        return sacs_a_dos
+
+    def filtre(L,B):
+        sac_a_dos_filtre=[]
+        for sac in L:
+            if sac.est_valide(B)== True:
+                sac_a_dos_filtre.append(sac)
+        return sac_a_dos_filtre
+ #6
 
 class SystemeRelationnel:
     def __init__(self, A, R):
         self.A = A  # Ensemble des éléments
         self.R = R  # Ensemble des paires constituant la relation binaire
-        
+
     #7
     def est_reflexive(self):
         for element in self.A:
@@ -98,4 +98,5 @@ class SystemeRelationnel:
         return True
 
 
- 
+
+
