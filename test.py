@@ -181,12 +181,28 @@ def getSR_Borne(B):
                     R.append((sac1 , sac2))
     return SystemeRelationnel(A, R)
 
+
+#14
+
 SR_PD = getSR_PD()
 SR_LexU = getSR_LexU()
-SR_LexC = getSR_LexU()
+SR_LexC = getSR_LexC()
+SR_Borne2 = getSR_Borne(2)
+SR_Borne3 = getSR_Borne(3)
+SR_Borne5 = getSR_Borne(5)
+
 print("Distance entre Pareto et LexU :" + str(SR_PD.distance(SR_LexU)))
 print("Distance entre Pareto et LexC :" + str(SR_PD.distance(SR_LexC)))
+print("Distance entre Pareto et Borne2 :" + str(SR_PD.distance(SR_Borne2)))
+print("Distance entre Pareto et Borne3 :" + str(SR_PD.distance(SR_Borne3)))
+print("Distance entre Pareto et Borne5 :" + str(SR_PD.distance(SR_Borne5)))
 print("Distance entre LexU et LexC :" + str(SR_LexU.distance(SR_LexC)))
+print("Distance entre LexU et Borne2 :" + str(SR_LexU.distance(SR_Borne2)))
+print("Distance entre LexU et Borne3 :" + str(SR_LexU.distance(SR_Borne3)))
+print("Distance entre LexU et Borne5 :" + str(SR_LexU.distance(SR_Borne5)))
+print("Distance entre LexC et Borne2 :" + str(SR_LexC.distance(SR_Borne2)))
+print("Distance entre LexC et Borne3 :" + str(SR_LexC.distance(SR_Borne3)))
+print("Distance entre LexC et Borne5 :" + str(SR_LexC.distance(SR_Borne5)))
     
 
 
