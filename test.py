@@ -6,6 +6,10 @@ class ConsoGES:
         self.coutGES = coutGES
         self.utilite = utilite
         self.description = description
+        
+    def equal(self, cons):
+        return self.coutGES == cons.coutGES and self.utilite == cons.utilite \
+            and self.description == cons.description
 
 #2
 alimentation = [
@@ -36,6 +40,10 @@ class SacADosGES:
         self.transport = transport
         self.logement = logement
         self.consommation = consommation
+        
+    def equal(self, sac):
+        return self.alimentation.equal(sac.alimentation) and self.transport.equal(sac.transport) \
+            and self.logement.equal(sac.logement) and self.consommation.equal(sac.consommation)
 
     #4
     def getCoutGES(self):
@@ -103,14 +111,10 @@ class SystemeRelationnel:
     
     #13
     def distance(self, SR):
-        dist = 0
-        for pair1 in self.R:
-            for pair2 in SR.R:
-                if pair1[0].__eq__(pair2[0]) and pair1[1].__eq__(pair2[1]):
-                    dist -= 0.5
-                    break
-            dist += 0.5
-        return dist
+        set_A = set(self.R)
+        set_B = set(SR.R)
+        pairs_diff = (set_A - set_B).union(set_B - set_A)
+        return len(pairs_diff)*0.5
 
 #8
 
@@ -143,6 +147,7 @@ def front_Pareto():
     plt.show()
         
 front_Pareto()
+
         
 #10
 
@@ -176,6 +181,12 @@ def getSR_Borne(B):
                     R.append((sac1 , sac2))
     return SystemeRelationnel(A, R)
 
+SR_PD = getSR_PD()
+SR_LexU = getSR_LexU()
+SR_LexC = getSR_LexU()
+print("Distance entre Pareto et LexU :" + str(SR_PD.distance(SR_LexU)))
+print("Distance entre Pareto et LexC :" + str(SR_PD.distance(SR_LexC)))
+print("Distance entre LexU et LexC :" + str(SR_LexU.distance(SR_LexC)))
     
 
 
