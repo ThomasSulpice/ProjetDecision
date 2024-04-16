@@ -133,6 +133,25 @@ def front_Pareto():
         
 front_Pareto()
         
+#10
+
+def getSR_LexU():
+    R = []
+    for sac1 in A:
+        for sac2 in A:
+            if ( sac1.getUtilite() > sac2.getUtilite() ) \
+                or ( sac1.getUtilite() == sac2.getUtilite() and sac1.getCoutGES() < sac2.getCoutGES() ) :
+                    R.append((sac1 , sac2))
+    return SystemeRelationnel(A, R)
+
+def getSR_LexC():
+    R = []
+    for sac1 in A:
+        for sac2 in A:
+            if ( sac1.getCoutGES() < sac2.getCoutGES() ) \
+                or ( sac1.getCoutGES() == sac2.getCoutGES() and sac1.getUtilite() > sac2.getUtilite() ):
+                    R.append((sac1 , sac2))
+    return SystemeRelationnel(A, R)
         
     
     
