@@ -203,6 +203,11 @@ print("Distance entre LexU et Borne5 :" + str(SR_LexU.distance(SR_Borne5)))
 print("Distance entre LexC et Borne2 :" + str(SR_LexC.distance(SR_Borne2)))
 print("Distance entre LexC et Borne3 :" + str(SR_LexC.distance(SR_Borne3)))
 print("Distance entre LexC et Borne5 :" + str(SR_LexC.distance(SR_Borne5)))
+
+#15
+
+def utiliteMax(B):
+    
     
 
 
