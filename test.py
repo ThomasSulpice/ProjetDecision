@@ -100,6 +100,17 @@ class SystemeRelationnel:
                 if b == c and (a, d) not in self.R:
                     return False
         return True
+    
+    #13
+    def distance(self, SR):
+        dist = 0
+        for pair1 in self.R:
+            for pair2 in SR.R:
+                if pair1[0].__eq__(pair2[0]) and pair1[1].__eq__(pair2[1]):
+                    dist -= 0.5
+                    break
+            dist += 0.5
+        return dist
 
 #8
 
@@ -153,8 +164,21 @@ def getSR_LexC():
                     R.append((sac1 , sac2))
     return SystemeRelationnel(A, R)
         
+
+#11
+
+def getSR_Borne(B):
+    R = []
+    for sac1 in A:
+        for sac2 in A:
+            if ( sac1.getCoutGES() <= B and sac2.getCoutGES() > B ) \
+                or ( sac1.getCoutGES() <= B and sac2.getCoutGES() <= B and sac1.getUtilite() > sac2.getUtilite()) :
+                    R.append((sac1 , sac2))
+    return SystemeRelationnel(A, R)
+
     
-    
+
+
                     
                     
 
