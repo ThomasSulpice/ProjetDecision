@@ -1,3 +1,5 @@
+import matplotlib.pyplot as plt
+
 #1
 class ConsoGES:
     def __init__(self, coutGES, utilite,description):
@@ -37,46 +39,48 @@ class SacADosGES:
 
     #4
     def getCoutGES(self):
-        total_cout = 0
-        for objet_sac in self.alimentation + self.transport + self.logement + self.consommation:
-            total_cout += objet_sac.coutGES
-        return total_cout
+        # total_cout = 0
+        # for objet_sac in self.alimentation + self.transport + self.logement + self.consommation:
+        #     total_cout += objet_sac.coutGES
+        # return total_cout
+        return self.alimentation.coutGES + self.transport.coutGES \
+            + self.logement.coutGES + self.consommation.coutGES
 
     def getUtilite(self):
-        total_utilite = 0
-        for objet_sac in self.alimentation + self.transport + self.logement + self.consommation:
-            total_utilite += objet_sac.utilite
-        return total_utilite
+        # total_utilite = 0
+        # for objet_sac in self.alimentation + self.transport + self.logement + self.consommation:
+        #     total_utilite += objet_sac.utilite
+        # return total_utilite
+        return self.alimentation.utilite + self.transport.utilite \
+            + self.logement.utilite + self.consommation.utilite
 
     def est_valide(self,B):
         return self.getCoutGES() <= B
 
-
     #5
-
     def getSacsADos():
         sacs_a_dos = []
         for a in alimentation:
             for t in transport:
                 for l in logement:
                     for c in consommation:
-                        sac = SacADosGES([a], [t], [l], [c])
+                        sac = SacADosGES(a, t, l, c)
                         sacs_a_dos.append(sac)
         return sacs_a_dos
-
+    
     def filtre(L,B):
         sac_a_dos_filtre=[]
         for sac in L:
             if sac.est_valide(B)== True:
                 sac_a_dos_filtre.append(sac)
         return sac_a_dos_filtre
- #6
+#6
 
 class SystemeRelationnel:
     def __init__(self, A, R):
         self.A = A  # Ensemble des éléments
         self.R = R  # Ensemble des paires constituant la relation binaire
-
+        
     #7
     def est_reflexive(self):
         for element in self.A:
@@ -97,6 +101,43 @@ class SystemeRelationnel:
                     return False
         return True
 
+#8
+
+A = SacADosGES.getSacsADos()
+
+def getSR_PD():
+    R = []
+    for sac1 in A:
+        for sac2 in A:
+            if ( sac1.getCoutGES() < sac2.getCoutGES() and sac1.getUtilite() >= sac2.getUtilite() ) \
+                or ( sac1.getCoutGES() <= sac2.getCoutGES() and sac1.getUtilite() > sac2.getUtilite() ):
+                    R.append((sac1 , sac2))
+    return SystemeRelationnel(A, R)
+
+                    
+#9
+
+def front_Pareto():
+    R = getSR_PD().R
+    liste_faible = []
+    for pair in R:
+        liste_faible.append(pair[1])
+    liste_forte = list(set(A) - set(liste_faible))
+    x = [sac.getCoutGES() for sac in liste_forte]
+    y = [sac.getUtilite() for sac in liste_forte]
+    plt.scatter(x,y)
+    plt.xlabel("coût GES du sac à dos")
+    plt.ylabel("utilité du sac à dos")
+    plt.title("Front de Pareto de A")
+    plt.show()
+        
+front_Pareto()
+        
+        
+    
+    
+                    
+                    
 
 
 
