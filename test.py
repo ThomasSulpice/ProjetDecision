@@ -275,23 +275,26 @@ plt.show()
 #17
 def estOrdMin(P, k1, k2):
     m = Model()
-    u = [m.add_var(var_type=INTEGER, lb=1 , ub=20) for i in range(12)]
+    u = [m.add_var(var_type=CONTINUOUS, lb=1 , ub=100) for i in range(12)]
 
     for pair in P:
         list1 = pair[0].binary_list()
         list2 = pair[1].binary_list()
-        m += xsum(u[i] * (list1[i] - list2[i]) for i in range(12)) >= .1
+        m += xsum(u[i] * (list1[i] - list2[i]) for i in range(12)) >= 10**(-6)
 
     k1_list = k1.binary_list()
     k2_list = k2.binary_list()
     m.objective = minimize(xsum(u[i] * (k1_list[i] - k2_list[i]) for i in range(12)))
 
-    m.optimize()
-
-    if m.objective_value <=0:
+    m.optimize(max_seconds=2)
+    if m.objective_bound <=0:
         return False
     else:
         return True
 
 
-print(estOrdMin(SR_LexU.R, A[2] , A[0]))
+for i in range(62):
+    testsum=0
+    if estOrdMin(SR_LexU.R , A[0] , A[i+1]):
+        testsum+=1
+print("testsum:" + str(testsum))
