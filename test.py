@@ -1,5 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
+from mip import Model, INTEGER, maximize, xsum, minimize, CONTINUOUS
+
 
 #1
 class ConsoGES:
@@ -83,6 +85,26 @@ class SacADosGES:
             if sac.est_valide(B)== True:
                 sac_a_dos_filtre.append(sac)
         return sac_a_dos_filtre
+
+    def binary_list(self):
+        liste = [0 for i in range(12)]
+        for k in range(4):
+            if self.alimentation.equal(alimentation[k]):
+                liste[k] = 1
+                break
+        for k in range(4):
+            if self.transport.equal(transport[k]):
+                liste[4+k] = 1
+                break
+        if self.logement.equal(logement[0]):
+            liste[8] = 1
+        else:
+            liste[9] = 1
+        if self.consommation.equal(consommation[0]):
+            liste[10] = 1
+        else:
+            liste[11] = 1
+        return liste
 #6
 
 class SystemeRelationnel:
@@ -235,8 +257,6 @@ def utiliteMax(B):
                         M[i,c] = max(M[i-1,c] , M[10,c-int(np.floor(items[i-1].coutGES*10))] + items[i-1].utilite)
             else:
                 M[i,c] = M[i-1,c]
-    if B==10.7:
-        print(M)
     return max(M[:,-1])
 
 #16
@@ -252,13 +272,26 @@ plt.grid()
 plt.show()
 
 
-    
-    
-    
+#17
+def estOrdMin(P, k1, k2):
+    m = Model()
+    u = [m.add_var(var_type=INTEGER, lb=1 , ub=20) for i in range(12)]
+
+    for pair in P:
+        list1 = pair[0].binary_list()
+        list2 = pair[1].binary_list()
+        m += xsum(u[i] * (list1[i] - list2[i]) for i in range(12)) >= .1
+
+    k1_list = k1.binary_list()
+    k2_list = k2.binary_list()
+    m.objective = minimize(xsum(u[i] * (k1_list[i] - k2_list[i]) for i in range(12)))
+
+    m.optimize()
+
+    if m.objective_value <=0:
+        return False
+    else:
+        return True
 
 
-                    
-                    
-
-
-
+print(estOrdMin(SR_LexU.R, A[2] , A[0]))
