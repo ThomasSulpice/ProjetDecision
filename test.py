@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import numpy as np
 
 #1
 class ConsoGES:
@@ -140,6 +141,7 @@ def front_Pareto():
     liste_forte = list(set(A) - set(liste_faible))
     x = [sac.getCoutGES() for sac in liste_forte]
     y = [sac.getUtilite() for sac in liste_forte]
+    plt.figure(1)
     plt.scatter(x,y)
     plt.xlabel("coût GES du sac à dos")
     plt.ylabel("utilité du sac à dos")
@@ -207,6 +209,50 @@ print("Distance entre LexC et Borne5 :" + str(SR_LexC.distance(SR_Borne5)))
 #15
 
 def utiliteMax(B):
+    items = alimentation + transport + logement + consommation
+    M = np.zeros((13,int(np.floor(10*B)+1)))
+    
+    for i in range(1,13):
+        for c in range(1,int(np.floor(10*B)+1)):
+            if items[i-1].coutGES <= c/10:
+                if i<=4:
+                    M[i,c] = max(M[i-1,c] , items[i-1].utilite)
+                elif i<=8:
+                    if M[4,c-int(np.floor(items[i-1].coutGES*10))] == 0:
+                        M[i,c] = M[i-1,c]
+                    else:
+                        M[i,c] = max(M[i-1,c] , M[4,c-int(np.floor(items[i-1].coutGES*10))] + items[i-1].utilite)
+                elif i<=10:
+                    if M[8,c-int(np.floor(items[i-1].coutGES*10))]==M[4,c-int(np.floor(items[i-1].coutGES*10))]:
+                        M[i,c] = M[i-1,c]
+                    else:
+                        M[i,c] = max(M[i-1,c] , M[8,c-int(np.floor(items[i-1].coutGES*10))] + items[i-1].utilite)
+                else:
+                    if M[8,c-int(np.floor(items[i-1].coutGES*10))]==M[4,c-int(np.floor(items[i-1].coutGES*10))] \
+                        or M[10,c-int(np.floor(items[i-1].coutGES*10))]==M[8,c-int(np.floor(items[i-1].coutGES*10))]:
+                            M[i,c] = M[i-1,c]
+                    else:
+                        M[i,c] = max(M[i-1,c] , M[10,c-int(np.floor(items[i-1].coutGES*10))] + items[i-1].utilite)
+            else:
+                M[i,c] = M[i-1,c]
+    if B==10.7:
+        print(M)
+    return max(M[:,-1])
+
+#16
+
+B = [i/10 for i in range(22,108)]
+maxU = [utiliteMax(b) for b in B]
+plt.figure(2)
+plt.plot(B,maxU)
+plt.xlabel("borne de coût GES")
+plt.ylabel("niveau d\'utilité optimale")
+plt.title("Graphique du niveau d\'utilité optimale en fonction de la borne de coût GES")
+plt.grid()
+plt.show()
+
+
+    
     
     
 
