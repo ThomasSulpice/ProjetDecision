@@ -289,7 +289,7 @@ def estOrdMin(P, k1, k2):
     m.verbose = 0
 
     m.optimize()
-    m.write('PL.pl')
+    #m.write('PL.pl')
 
     if m.objective_value <=0:
         return False
